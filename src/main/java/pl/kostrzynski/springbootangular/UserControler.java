@@ -5,21 +5,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+@RestController
 @RequestMapping(value = "/users", produces = {MediaType.APPLICATION_JSON_VALUE,
         MediaType.APPLICATION_XML_VALUE})
 public class UserControler {
-    @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    public UserControler(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
     @GetMapping
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userRepo.findAll(), HttpStatus.OK);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<User>> getUsersById(@PathVariable Long id) {
@@ -28,7 +36,7 @@ public class UserControler {
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         return userRepo.save(user);
     }

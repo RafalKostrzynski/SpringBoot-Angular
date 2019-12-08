@@ -1,17 +1,19 @@
 package pl.kostrzynski.springbootangular;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotNull
     private String nick;
+    @NotNull
     private String password;
 
-    public User(long id, String nick, String password) {
-        this.id = id;
+    public User( String nick, String password) {
         this.nick = nick;
         this.password = password;
     }
